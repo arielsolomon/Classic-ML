@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import warnings
-from run_classifiers_p import classify, highest_score, plot_tsne
+from run_classifiers_p import classify, highest_score, plot_tsne, plot_data
 import time
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
@@ -70,7 +70,6 @@ if __name__ == '__main__':
   _,_,_,_,_,df = main(X, y)
   df = df.sort_values(by=['TPR', 'FPR'], ascending=False)
   df.to_csv(root+classification_path+'clasification_res.csv', index=False)
-
 
   # some more info: 3d data plot for different data features
   plt.figure()
