@@ -1,29 +1,25 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
+#imports:
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import warnings
-from run_classifiers_p import classify, highest_score
+from run_classifiers_p import classify, highest_score, plot_tsne
 import time
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 import os
 import fnmatch
 from mpl_toolkits.mplot3d import Axes3D
+
 warnings.filterwarnings("ignore")
 
 def main(X, y):
 
   root = 'your project root dir/'
-  data_path = root+'data'
-  classification_path = root+'cls_res/'
-  models_path = root+'models
-  stats_img_path = root+'imgs'
+  data_path = root+'data' 
+  classification_path = root+'cls_res/' # tabulated classification results path
+  models_path = root+'models # trained models path
+  stats_img_path = root+'imgs' # images statistics path
   
   X = 'list the input files, e.g. '
   y = []
@@ -41,8 +37,11 @@ def main(X, y):
      
     #creating a list of loaded arrays for train and test - adjuct to your project/array size
     
-  X_train1 = np.array([np.load(root+'Database/numpys/'+arr) for arr in X_train]).reshape(len(X_train), 100*255)
-  X_test1 = np.array([np.load(root+'Database/numpys/'+arr) for arr in X_test]).reshape(len(X_test), 100*255)
+  X_train1 = np.array([np.load(rdata_path'+arr) for arr in X_train]).reshape(len(X_train), 100*255)
+  X_test1 = np.array([np.load(data_path+arr) for arr in X_test]).reshape(len(X_test), 100*255)
+                               
+  # can you see any clustering:
+  plot_data_tsne =    plot_tsne(X_test1)
   st = time.time()
   aucs, scores, names, preds_prob, models, df = classify(X_train1, X_test1, y_train, y_test)
 
@@ -57,12 +56,13 @@ def main(X, y):
   sorted_auc = sorted(auc_dic.items(), key=lambda kv: kv[1],reverse=True)
   high_accuracy_model = sorted_scores[0]
   highest_auc_model = sorted_auc[0]
+  
+  # printing not a must but usful to see when running which is the leading classifier
+  
   print('highest accuracy model is:', high_accuracy_model[0], 'at', "%.1f" % int(high_accuracy_model[1][0]),'%')
   print('highest auc model is:', highest_auc_model[0], 'at', "%.1f" % int(100*highest_auc_model[1][0]),'%')
   print ('end:', float((time.time()-st))/60)
-  Xt = TSNE(n_components=2).fit_transform(X_test1)
-  plt.scatter(Xt[:, 0], Xt[:, 1], c=y_test.astype(np.int32),
-                                  alpha=0.2, cmap=plt.cm.viridis)
+
   return aucs, scores, names, preds_prob, models, df
 if __name__ == '__main__':
 
