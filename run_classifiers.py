@@ -38,6 +38,30 @@ def plot_tsne(X):
   Xt = TSNE(n_components=2).fit_transform(X)
   plt.scatter(Xt[:, 0], Xt[:, 1], c=y_test.astype(np.int32),
                                   alpha=0.2, cmap=plt.cm.viridis)
+  
+ def plot_data(X,data_path):
+    ###fig definitions
+  width=8
+  height=5
+  rows = 2
+  cols = 3
+  axes=[]
+  fig=plt.figure()
+  x_axis = np.linspace(0,255, num=255)
+  
+  #ploting and saving according to analysis type
+  
+  for a in range(rows*cols):
+      choice = np.random.choice(len(X))
+      choice2 = np.random.choice(100)
+      b = np.load(data_path+ X[choice]))
+      print(b.shape)
+      axes.append( fig.add_subplot(rows, cols, a+1) )
+      subplot_title = ("Subplot"+str(X[choice].split(',')[2]))
+      axes[-1].set_title(subplot_title)  
+      plt.scatter(x_axis, b[choice2,:],marker=".", pickradius=1, linewidths=0.5)
+  fig.tight_layout()    
+  plt.show()
     
 def add_values_in_dict(sample_dict, key, list_of_values):
     """Append multiple values to a key in the given dictionary"""
