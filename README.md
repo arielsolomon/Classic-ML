@@ -1,6 +1,6 @@
 # Classic-ML
-Iterate your data over ML models 
-Export your results in managable fassion as stats in images and in csv
+Iterate your data over classical ML models for binary classification
+Export your results in managable fassion as statistical images images and in csv classification text results
 Folder system:
 project_main
   data            images            models
