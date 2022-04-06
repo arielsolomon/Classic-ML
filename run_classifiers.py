@@ -34,7 +34,11 @@ classification_path = root+'cls_res/'
 models_path = root+'models
 stats_img_path = root+'imgs'
 
-
+def plot_tsne(X):
+  Xt = TSNE(n_components=2).fit_transform(X)
+  plt.scatter(Xt[:, 0], Xt[:, 1], c=y_test.astype(np.int32),
+                                  alpha=0.2, cmap=plt.cm.viridis)
+    
 def add_values_in_dict(sample_dict, key, list_of_values):
     """Append multiple values to a key in the given dictionary"""
     if key not in sample_dict:
