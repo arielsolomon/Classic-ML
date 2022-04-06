@@ -29,9 +29,10 @@ warnings.filterwarnings("ignore")
 # datetime object containing current date and time
 now = str(datetime.now())[:-10]
 root = 'project root folder/'
-model_path = root+'models/'
-res_path = root+'cls_results/'
-img_path = root+'images'
+data_path = root+'data'
+classification_path = root+'cls_res/'
+models_path = root+'models
+stats_img_path = root+'imgs'
 
 
 def add_values_in_dict(sample_dict, key, list_of_values):
@@ -59,7 +60,7 @@ def Roc(y_true, y_pred, name):
             pred.append(0)
     Conf = sns.heatmap(confusion_matrix(y_true,np.asarray(pred)), annot=True, cmap='BuPu', cbar=False,  fmt='g')
     plt.title(name+' text_features '+now)
-    plt.savefig(root+'cls_results/images/'+'text_feature_heatmap'+name+' '+now+'.png')
+    plt.savefig(root+'stats_img_path/'+'text_feature_heatmap'+name+' '+now+'.png')
     plt.show()
 
     plt.plot(fpr, tpr, color='orange', label='ROC')
@@ -68,7 +69,7 @@ def Roc(y_true, y_pred, name):
     plt.ylabel('True Positive Rate')
     plt.title(name+' text_features'+now)
     plt.legend()
-    plt.savefig(root+'images/'+'text_feature_Roc'+name+' '+now+'.png')
+    plt.savefig(root+'stats_img_path/'+'text_feature_Roc'+name+' '+now+'.png')
     plt.show()
 
 def fp_10(y_true, y_pred, fp=0.1):
@@ -151,14 +152,10 @@ def classify(X, y, X_train, X_test, y_train, y_test):
         sensitivity = recall_score(y_test, preds)
         specificity = 1-fpr[1]
         Roc(y_test, preds_prob[:,1], name)
-        # fp_10(y_test, preds_prob[:,1])
         df = df.append({'Classifier': name, 'AUC': "%.2f" % auc(fpr, tpr), 'TPR': "%.2f" % tpr[1],
                         'FPR':"%.2f" % fpr[1],'Specificity': "%.2f" % specificity,
                         'Sensitivity': "%.2f" % sensitivity },  ignore_index=True)
-        # print(name , 'AUC = ', "%.2f" % metrics.auc(fpr, tpr))
-        # print('FPR = ', "%.2f" % fpr[1])
-        # print('TPR = ', "%.2f" % tpr[1])
-        
+       
         aucs.append(auc(fpr, tpr))
         scores.append(score)
         fprs.append(fpr)
