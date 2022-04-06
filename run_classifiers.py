@@ -28,8 +28,10 @@ warnings.filterwarnings("ignore")
 
 # datetime object containing current date and time
 now = str(datetime.now())[:-10]
-root = '/app/disk2/Corona/'
-model_root = root+'cls_results/models/'
+root = 'project root folder/'
+model_path = root+'models/'
+res_path = root+'cls_results/'
+img_path = root+'images'
 
 
 def add_values_in_dict(sample_dict, key, list_of_values):
@@ -55,9 +57,6 @@ def Roc(y_true, y_pred, name):
             pred.append(1)
         else:
             pred.append(0)
-    # print('fpr:', "%.2f" % float(fpr[optimal_idx]),' ,', 'tpr:', "%.2f" % float(tpr[optimal_idx]))
-    # print('CR:', confusion_matrix(y_true,np.asarray(pred)))
-    # print('\nConfusion matrix:')
     Conf = sns.heatmap(confusion_matrix(y_true,np.asarray(pred)), annot=True, cmap='BuPu', cbar=False,  fmt='g')
     plt.title(name+' text_features '+now)
     plt.savefig(root+'cls_results/images/'+'text_feature_heatmap'+name+' '+now+'.png')
@@ -69,7 +68,7 @@ def Roc(y_true, y_pred, name):
     plt.ylabel('True Positive Rate')
     plt.title(name+' text_features'+now)
     plt.legend()
-    plt.savefig(root+'cls_results/images/'+'text_feature_Roc'+name+' '+now+'.png')
+    plt.savefig(root+'images/'+'text_feature_Roc'+name+' '+now+'.png')
     plt.show()
 
 def fp_10(y_true, y_pred, fp=0.1):
