@@ -40,8 +40,9 @@ def main(X, y):
   X_train1 = np.array([np.load(rdata_path'+arr) for arr in X_train]).reshape(len(X_train), 100*255)
   X_test1 = np.array([np.load(data_path+arr) for arr in X_test]).reshape(len(X_test), 100*255)
                                
-  # can you see any clustering:
-  plot_data_tsne =    plot_tsne(X_test1)
+  # can you see any clustering (indication for possible classification):
+  plot_tsne(X_test1)
+                               
   st = time.time()
   aucs, scores, names, preds_prob, models, df = classify(X_train1, X_test1, y_train, y_test)
 
@@ -70,31 +71,8 @@ if __name__ == '__main__':
   df = df.sort_values(by=['TPR', 'FPR'], ascending=False)
   df.to_csv(root+classification_path+'clasification_res.csv', index=False)
 
-  ###fig definitions
-  width=8
-  height=5
-  rows = 2
-  cols = 3
-  axes=[]
-  fig=plt.figure()
-  x_axis = np.linspace(0,255, num=255)
-  
-  #ploting and saving according to analysis type
-  
-  for a in range(rows*cols):
-      choice = np.random.choice(len(X))
-      choice2 = np.random.choice(100)
-      b = np.load(os.path.join(root, 'Database/numpys/', X[choice]))
-      print(b.shape)
-      axes.append( fig.add_subplot(rows, cols, a+1) )
-      subplot_title = ("Subplot"+str(X[choice].split(',')[2]))
-      axes[-1].set_title(subplot_title)  
-      plt.scatter(x_axis, b[choice2,:],marker=".", pickradius=1, linewidths=0.5)
-  fig.tight_layout()    
-  plt.show()
 
-
-
+  # some more info: 3d data plot for different data features
   plt.figure()
   ax_n = plt.axes(projection='3d')
   ax_n.set_title('All')
