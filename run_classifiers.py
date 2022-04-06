@@ -42,7 +42,7 @@ def add_values_in_dict(sample_dict, key, list_of_values):
     sample_dict[key].extend(list_of_values)
     return sample_dict
     
-def Roc(y_true, y_pred, name):
+def Roc(y_true, y_pred, name, stats_img_path):
     #ROC_AUC plots and optimal threshold
     fpr, tpr, thresholds = roc_curve(y_true, y_pred)
     sensitivity = 1 - fpr
@@ -60,7 +60,7 @@ def Roc(y_true, y_pred, name):
             pred.append(0)
     Conf = sns.heatmap(confusion_matrix(y_true,np.asarray(pred)), annot=True, cmap='BuPu', cbar=False,  fmt='g')
     plt.title(name+' text_features '+now)
-    plt.savefig(root+'stats_img_path/'+'text_feature_heatmap'+name+' '+now+'.png')
+    plt.savefig(stats_img_path/'+'text_feature_heatmap'+name+' '+now+'.png')
     plt.show()
 
     plt.plot(fpr, tpr, color='orange', label='ROC')
@@ -69,7 +69,7 @@ def Roc(y_true, y_pred, name):
     plt.ylabel('True Positive Rate')
     plt.title(name+' text_features'+now)
     plt.legend()
-    plt.savefig(root+'stats_img_path/'+'text_feature_Roc'+name+' '+now+'.png')
+    plt.savefig('stats_img_path/'+'text_feature_Roc'+name+' '+now+'.png')
     plt.show()
 
 def fp_10(y_true, y_pred, fp=0.1):
@@ -105,7 +105,7 @@ def fp_10(y_true, y_pred, fp=0.1):
     return optimal_threshold,fpr[optimal_idx],tpr[optimal_idx],score/len(y_true)
         
 
-def classify(X, y, X_train, X_test, y_train, y_test):
+def classify(X, y, X_train, X_test, y_train, y_test, models_path):
     names = ["KNearest Neighbors", "Linear SVM", "RBF SVM", 
              "Gaussian Process","Decision Tree", "Random Forest"
              , "Neural Net", "AdaBoost", "XgBoost"
@@ -143,7 +143,7 @@ def classify(X, y, X_train, X_test, y_train, y_test):
         names = names
         clf.fit(X_train, y_train)
         cv_results = cross_validate(clf, X, y, scoring = scoring, cv=cv)
-        file_name = model_root+name+' text_features '+now+'.sav'
+        file_name = models_path+name+' text_features '+now+'.sav'
         pickle.dump(clf, open(file_name, 'wb'))
         score = 100*clf.score(X_test, y_test)
         preds = clf.predict(X_test)
