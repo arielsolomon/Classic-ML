@@ -19,8 +19,13 @@ warnings.filterwarnings("ignore")
 
 def main(X, y):
 
-  root = 'your project root dir'
-  X = 'list of input files that is under root'
+  root = 'your project root dir/'
+  data_path = root+'data'
+  classification_path = root+'cls_res/'
+  models_path = root+'models
+  stats_img_path = root+'imgs'
+  
+  X = 'list the input files, e.g. '
   y = []
   for file in X:
 
@@ -34,7 +39,7 @@ def main(X, y):
     
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
      
-    #creating a list of loaded arrays for train and test
+    #creating a list of loaded arrays for train and test - adjuct to your project/array size
     
   X_train1 = np.array([np.load(root+'Database/numpys/'+arr) for arr in X_train]).reshape(len(X_train), 100*255)
   X_test1 = np.array([np.load(root+'Database/numpys/'+arr) for arr in X_test]).reshape(len(X_test), 100*255)
@@ -63,7 +68,7 @@ if __name__ == '__main__':
 
   _,_,_,_,_,df = main(X, y)
   df = df.sort_values(by=['TPR', 'FPR'], ascending=False)
-  df.to_csv('full_scan_classification.csv', index=False)
+  df.to_csv(root+classification_path+'clasification_res.csv', index=False)
 
   ###fig definitions
   width=8
@@ -73,6 +78,9 @@ if __name__ == '__main__':
   axes=[]
   fig=plt.figure()
   x_axis = np.linspace(0,255, num=255)
+  
+  #ploting and saving according to analysis type
+  
   for a in range(rows*cols):
       choice = np.random.choice(len(X))
       choice2 = np.random.choice(100)
